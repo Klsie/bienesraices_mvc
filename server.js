@@ -28,6 +28,9 @@ app.use(express.static('public')) //Rutas estaticas
 app.use('/auth', usuarioRoutes)
 
 //Habilitar PUG
+app.get('/', (req, res) => {
+    res.render('auth/login', { pagina: 'Inicio' });
+});
 
 // Definir un puerto OBLIGATORIO
 const port = 3000;

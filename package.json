@@ -16,11 +16,12 @@
     "express": "^5.1.0",
     "mysql2": "^3.15.1",
     "pug": "^3.0.3",
+    "pug-cli": "^1.0.0-alpha6",
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
-    "nodemon": "^3.1.10",
+    "nodemon": "^3.1.11",
     "postcss": "^8.5.6",
     "postcss-cli": "^11.0.1",
     "tailwindcss": "^3.3.5"
