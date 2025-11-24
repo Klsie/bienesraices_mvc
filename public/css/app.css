@@ -221,5 +221,59 @@
 
 .hover\:bg-blue-700:hover{
   --tw-bg-opacity: 1;
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity))
+  background-color: rgb(198, 234, 168);
+  color: rgb(108, 143, 84);
+}
+
+.backGreen{
+  background-color: rgb(198, 234, 168);
+}
+
+.cuadros{
+  border-radius: 10px;
+  background-color: rgb(19, 52, 0);
+  filter: drop-shadow(5px 10px 4px #000000);
+  max-width: 36rem;
+  justify-self: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 15rem;
+}
+
+@font-face {
+  font-family: 'LeagueSpartan';
+  src: url(/fonts/LeagueSpartan-VariableFont_wght.ttf);
+}
+
+.texto{
+  font-family: 'LeagueSpartan';
+  color: rgb(198, 234, 168);
+}
+
+.textoLink{
+  font-family: 'LeagueSpartan';
+  color: rgb(108, 143, 84);
+  font-weight: 700;
+}
+
+.entradas{
+  font-family: 'LeagueSpartan';
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(198, 234, 168);
+  min-height: 3rem;
+  border-radius: 10px;
+  text-align: left;
+  font-size: x-large;
+  padding-left: 10px;
+}
+
+.boton1{
+  background-color: rgb(108, 143, 84);
+  border-radius: 10px;
+  font-size: x-large;
+}
+
+.mb-4{ 
+  margin-bottom: 2rem; 
 }
