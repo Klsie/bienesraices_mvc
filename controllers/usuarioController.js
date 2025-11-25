@@ -32,10 +32,17 @@ const listaCasas = (req, res) => {
     })
 }
 
+const perfil = (req, res) => {
+    res.render('auth/perfil',{
+        pagina: 'Perfil',
+    })
+}
+
 export {
     formularioLogin,
     registrar,
     formularioRegistro,
     formularioOlvidePassword,
-    listaCasas
+    listaCasas,
+    perfil
 }

@@ -1,0 +1,35 @@
+extends ../layout/index
+
+block header
+  header.header
+    div.divLogo
+      img(src='/images/logoLightGreen.png', alt='Un perro pug')
+
+block contenido
+  .contenedorGeneral
+
+    .perfilUsuario
+      h2.nombreUsuario Teisel
+
+      img.fotoPerfil(src="/images/akali.jpg" alt="perfil")
+
+      p.correoUsuario teisel@correo.com
+      p.telefonoUsuario 3333333333
+
+      button.botonPublicar Publicar
+
+    .listaAnuncios
+      h2.tituloListado Mis anuncios
+
+      each i in [1,2,3]
+        div.divCasa
+            img.imagenCasa(src='/images/casa.png', alt='Un perro pug')
+            div.divInfoCasa
+                .textoCasa.font-extrabold.text-4xl.separacion MN 12,000,000
+                .textoCasa.grandeFina Calle Pedro Moreno
+                .textoCasa.mediano.font-thin Americana, Guadalajara
+                .textoCasa 550m² lote        10 rec      5 baños          4estac 
+                .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
+            .botonesCasa
+              button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Modificar
+              button.boton2.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Eliminar
