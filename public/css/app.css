@@ -237,7 +237,6 @@
   justify-self: center;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  margin-top: 15rem;
 }
 
 @font-face {
@@ -276,4 +275,12 @@
 
 .mb-4{ 
   margin-bottom: 2rem; 
+}
+
+.loginM{
+  margin-top: 15rem;
+}
+
+.registroM{
+  margin-top: 10rem;
 }
