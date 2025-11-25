@@ -26,10 +26,16 @@ const formularioOlvidePassword = (req, res) => {
     })
 }
 
+const listaCasas = (req, res) => {
+    res.render('auth/casas',{
+        pagina: 'Lista de casas',
+    })
+}
 
 export {
     formularioLogin,
     registrar,
     formularioRegistro,
-    formularioOlvidePassword
+    formularioOlvidePassword,
+    listaCasas
 }
