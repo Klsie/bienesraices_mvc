@@ -1,0 +1,13 @@
+extends ../layout/index
+
+block header
+  header.header
+    div.divLogo
+      img(src='/images/logoLightGreen.png', alt='Un perro pug')
+
+    div.boton1.texto.text-center.btnPerfil(onclick="perfil()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") 
+      img.imagenPerfil(src='/images/akali.jpg', alt='Un perro pug') 
+      div.textoBtnPerfil
+        t Teisel
+
+block contenido
