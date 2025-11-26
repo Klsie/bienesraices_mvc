@@ -1,11 +1,20 @@
 import express from 'express';
-import { formularioLogin, autenticar, formularioRegistro, registrar, cerrarSesion } from '../controllers/usuarioController.js';
+import {
+    mostrarLogin,
+    autenticar,
+    mostrarRegistro,
+    registrar,
+    cerrarSesion
+} from '../controllers/usuarioController.js';
+
 const router = express.Router();
 
-router.get('/login', formularioLogin);
+router.get('/login', mostrarLogin);
 router.post('/login', autenticar);
-router.get('/registro', formularioRegistro);
+
+router.get('/registro', mostrarRegistro);
 router.post('/registro', registrar);
-router.post('/logout', cerrarSesion);
+
+router.get('/logout', cerrarSesion);
 
 export default router;
