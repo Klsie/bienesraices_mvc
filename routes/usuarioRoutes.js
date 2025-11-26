@@ -1,21 +1,11 @@
 import express from 'express';
-import {formularioLogin,formularioRegistro,formularioOlvidePassword,registrar, listaCasas, perfil} from '../controllers/usuarioController.js'
-
-
-
+import { formularioLogin, autenticar, formularioRegistro, registrar, cerrarSesion } from '../controllers/usuarioController.js';
 const router = express.Router();
 
 router.get('/login', formularioLogin);
-router.get('/registro', formularioRegistro); // ENDPOINT's
+router.post('/login', autenticar);
+router.get('/registro', formularioRegistro);
 router.post('/registro', registrar);
-router.get('/olvide-password', formularioOlvidePassword);
-router.get('/casas', listaCasas);
-router.get('/perfil', perfil)
-//Duplicar rutas
-//router.get('/auth/login', formularioLogin);
-//router.get('/auth/registro', formularioRegistro);
-//Para que funcionen las rutas en server.js
+router.post('/logout', cerrarSesion);
 
-
-
-export default router
+export default router;
