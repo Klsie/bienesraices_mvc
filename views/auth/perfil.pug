@@ -31,5 +31,10 @@ block contenido
                 .textoCasa 550m² lote        10 rec      5 baños          4estac 
                 .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
             .botonesCasa
-              button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Modificar
+              button.boton1.texto.btnInfo(onclick="editarCasa()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Modificar
               button.boton2.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Eliminar
+    
+    script.
+        function editarCasa() {
+            window.location.href = "/auth/casa";
+        }
