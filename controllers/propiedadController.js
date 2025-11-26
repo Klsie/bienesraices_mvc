@@ -1,105 +1,176 @@
-import { Casa, Imagen, TipoPropiedad } from '../models/index.js';
-import fs from 'fs';
+import { Casa, Imagen, Usuario } from '../models/index.js';
 import path from 'path';
+import fs from 'fs';
 
-export const inicioPublico = async (req, res) => {
+// ----------------------------
+// Página principal (público)
+// ----------------------------
+export const paginaInicio = async (req, res) => {
   const casas = await Casa.findAll({
-    include: [{ model: Imagen, limit: 1 }, { model: TipoPropiedad }],
-    order: [['createdAt', 'DESC']]
+    include: [{ model: Imagen }],
+    limit: 10
   });
-  res.render('paginas/inicio', { pagina: 'Inicio', casas });
+
+  res.render('layout/index', {
+    pagina: 'Bienes Raíces',
+    casas
+  });
 };
 
-export const verPropiedadPublica = async (req, res) => {
-  const { id } = req.params;
-  const casa = await Casa.findByPk(id, { include: [Imagen, TipoPropiedad, 'usuario'] });
-  if (!casa) return res.redirect('/');
-  res.render('paginas/propiedad', { pagina: casa.titulo, casa });
+// ----------------------------
+// Panel administrador
+// ----------------------------
+export const admin = async (req, res) => {
+  const usuarioId = req.session?.usuario?.id;
+
+  const casas = await Casa.findAll({
+    where: { usuarioId },
+    include: [{ model: Imagen }]
+  });
+
+  res.render('auth/casas', {
+    pagina: 'Mis Propiedades',
+    casas
+  });
 };
 
-// ADMIN: listar propiedades del agente
-export const adminListar = async (req, res) => {
-  const usuarioId = req.session.usuario.id;
-  const casas = await Casa.findAll({ where: { usuarioId }, include: [Imagen, TipoPropiedad] });
-  res.render('admin/propiedades/listar', { pagina: 'Mis Propiedades', casas });
+// ----------------------------
+// Formulario crear propiedad
+// ----------------------------
+export const formularioCrear = (req, res) => {
+  res.render('auth/casas', {
+    pagina: 'Crear Propiedad',
+    crear: true
+  });
 };
 
-export const adminCrearForm = async (req, res) => {
-  const tipos = await TipoPropiedad.findAll();
-  res.render('admin/propiedades/crear', { pagina: 'Crear Propiedad', tipos });
-};
+// ----------------------------
+// Guardar propiedad
+// ----------------------------
+export const guardar = async (req, res) => {
+  const { titulo, precio, descripcion, direccion } = req.body;
 
-export const adminGuardar = async (req, res) => {
-  try {
-    const usuarioId = req.session.usuario.id;
-    const { titulo, precio, descripcion, direccion, tipoId } = req.body;
-
-    // sanitizar/validar básicos
-    if (!titulo || !precio || !direccion) {
-      return res.render('admin/propiedades/crear', { error: 'Completa los campos obligatorios', titulo, precio, direccion });
-    }
-
-    const casa = await Casa.create({ titulo, precio, descripcion, direccion, tipoId, usuarioId });
-
-    // manejar imágenes si vienen
-    if (req.files && req.files.length > 0) {
-      const imgs = req.files.map((f, i) => ({ url: `/uploads/${f.filename}`, orden: i+1, casaId: casa.id }));
-      await Imagen.bulkCreate(imgs);
-    }
-
-    res.redirect('/admin/propiedades');
-  } catch (error) {
-    console.error(error);
-    res.render('admin/propiedades/crear', { error: 'Error al guardar la propiedad' });
+  if (!titulo || !precio) {
+    return res.render('auth/casas', {
+      pagina: 'Crear Propiedad',
+      error: 'Completa los campos obligatorios',
+      datos: req.body
+    });
   }
-};
 
-export const adminEditarForm = async (req, res) => {
-  const { id } = req.params;
   const usuarioId = req.session.usuario.id;
-  const casa = await Casa.findOne({ where: { id, usuarioId }, include: [Imagen, TipoPropiedad] });
-  if (!casa) return res.redirect('/admin/propiedades');
-  const tipos = await TipoPropiedad.findAll();
-  res.render('admin/propiedades/editar', { pagina: 'Editar Propiedad', casa, tipos });
+
+  const casa = await Casa.create({
+    titulo,
+    precio,
+    descripcion,
+    direccion,
+    usuarioId
+  });
+
+  res.redirect(`/propiedades/imagen/${casa.id}`);
 };
 
-export const adminActualizar = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const usuarioId = req.session.usuario.id;
-    const casa = await Casa.findOne({ where: { id, usuarioId } });
-    if (!casa) return res.redirect('/admin/propiedades');
+// ----------------------------
+// Formulario subir imagen
+// ----------------------------
+export const formularioImagen = async (req, res) => {
+  const { id } = req.params;
 
-    const { titulo, precio, descripcion, direccion, tipoId } = req.body;
-    await casa.update({ titulo, precio, descripcion, direccion, tipoId });
+  const casa = await Casa.findByPk(id);
 
-    // si hay nuevas imágenes, agregar
-    if (req.files && req.files.length > 0) {
-      const imgs = req.files.map((f, i) => ({ url: `/uploads/${f.filename}`, orden: i+1, casaId: casa.id }));
-      await Imagen.bulkCreate(imgs);
-    }
+  if (!casa) return res.redirect('/admin');
 
-    res.redirect('/admin/propiedades');
-  } catch (error) {
-    console.error(error);
-    res.redirect('/admin/propiedades');
+  res.render('auth/casas', {
+    pagina: 'Subir Imagen',
+    subirImagen: true,
+    casa
+  });
+};
+
+// ----------------------------
+// Guardar imagen
+// ----------------------------
+export const guardarImagen = async (req, res) => {
+  const { id } = req.params;
+
+  const casa = await Casa.findByPk(id);
+  if (!casa) return res.redirect('/admin');
+
+  if (!req.file) {
+    return res.render('auth/casas', {
+      pagina: 'Subir Imagen',
+      subirImagen: true,
+      casa,
+      error: 'Debes seleccionar una imagen'
+    });
   }
+
+  await Imagen.create({
+    nombre: req.file.filename,
+    casaId: casa.id
+  });
+
+  res.redirect('/admin');
 };
 
-export const adminEliminar = async (req, res) => {
+// ----------------------------
+// Formulario editar propiedad
+// ----------------------------
+export const formularioEditar = async (req, res) => {
   const { id } = req.params;
-  const usuarioId = req.session.usuario.id;
-  const casa = await Casa.findOne({ where: { id, usuarioId }, include: [ Imagen ] });
-  if (!casa) return res.redirect('/admin/propiedades');
 
-  // eliminar archivos físicos (opcional)
-  if (casa.imagenes && casa.imagenes.length) {
-    for (const img of casa.imagenes) {
-      const ruta = path.join(process.cwd(), 'public', img.url);
-      if (fs.existsSync(ruta)) fs.unlinkSync(ruta);
-    }
+  const casa = await Casa.findByPk(id);
+
+  if (!casa) return res.redirect('/admin');
+
+  res.render('auth/casas', {
+    pagina: 'Editar Propiedad',
+    editar: true,
+    casa
+  });
+};
+
+// ----------------------------
+// Guardar edición
+// ----------------------------
+export const guardarEdicion = async (req, res) => {
+  const { id } = req.params;
+
+  const casa = await Casa.findByPk(id);
+  if (!casa) return res.redirect('/admin');
+
+  const { titulo, precio, descripcion, direccion } = req.body;
+
+  await casa.update({
+    titulo,
+    precio,
+    descripcion,
+    direccion
+  });
+
+  res.redirect('/admin');
+};
+
+// ----------------------------
+// Eliminar propiedad
+// ----------------------------
+export const eliminar = async (req, res) => {
+  const { id } = req.params;
+
+  const casa = await Casa.findByPk(id);
+  if (!casa) return res.redirect('/admin');
+
+  // borrar imagen física si existe
+  const imagen = await Imagen.findOne({ where: { casaId: casa.id } });
+
+  if (imagen) {
+    const ruta = path.resolve(`public/uploads/${imagen.nombre}`);
+    if (fs.existsSync(ruta)) fs.unlinkSync(ruta);
+
+    await imagen.destroy();
   }
 
   await casa.destroy();
-  res.redirect('/admin/propiedades');
+  res.redirect('/admin');
 };
