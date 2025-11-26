@@ -3,51 +3,62 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import path from 'path';
 import db from './config/db.js';
+
+// Rutas
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import propiedadRoutes from './routes/propiedadRoutes.js';
-import { Usuario, Casa, TipoPropiedad, Imagen } from './models/index.js';
+import routes from './routes/index.js';
 
 dotenv.config({ path: '.env' });
 
 const app = express();
 
+// Middlewares esenciales
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Archivos estáticos (CSS, imágenes, JS del frontend)
 app.use(express.static(path.resolve('public')));
 
+// Configurar sesiones
 app.use(session({
-  secret: process.env.SESSION_SECRET ?? 'secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 2 } // 2 horas
+    secret: process.env.SESSION_SECRET ?? 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2  // 2 horas
+    }
 }));
 
-// motor pug
+// PUG
 app.set('view engine', 'pug');
 app.set('views', path.resolve('views'));
 
-// pasar session a vistas
+// Pasar sesión a las vistas
 app.use((req, res, next) => {
-  res.locals.session = req.session;
-  next();
+    res.locals.session = req.session;
+    next();
 });
 
-// rutas
-app.use('/', usuarioRoutes);
-app.use('/', propiedadRoutes);
+// Rutas
+app.use('/', routes);            // rutas principales
+app.use('/', usuarioRoutes);     // login, registro, perfil
+app.use('/', propiedadRoutes);   // CRUD propiedades
 
-// conectar y sync
+// Conectar DB y sincronizar sin borrar datos
 const start = async () => {
-  try {
-    await db.authenticate();
-    // crear tablas si no existen
-    await db.sync();
-    console.log('DB conectada y sincronizada');
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => console.log('Servidor en puerto', port));
-  } catch (error) {
-    console.error('Error al iniciar app:', error);
-  }
+    try {
+        await db.authenticate();
+        await db.sync(); // NO usa force ni alter → no borra tablas
+        console.log('Base de datos conectada');
+
+        const port = process.env.PORT || 3000;
+        app.listen(port, () =>
+            console.log(`Servidor en puerto ${port}`)
+        );
+    } catch (error) {
+        console.error('Error al iniciar la app:', error);
+    }
 };
 
 start();
