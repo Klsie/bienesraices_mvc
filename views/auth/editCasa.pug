@@ -1,10 +1,12 @@
 extends ../layout/index
 
+block header
+  header.header
+    div.divLogo
+      img(src='/images/logoLightGreen.png')
+
+
 block contenido
-
-
-  button.boton1.texto(type="button" onclick="retro()")| ← Regresar
-
   if accion === 'editar'
     h2.text-xl.mb-4 Imágenes actuales
 
