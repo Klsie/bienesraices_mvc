@@ -2,22 +2,21 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import protegerRuta from '../middlewares/protegerRuta.js';
+
 import {
   paginaInicio,
   admin,
-  formularioCrear,
-  guardar,
-  formularioImagen,
-  guardarImagen,
-  formularioEditar,
-  guardarEdicion,
-  eliminar,
-  verPropiedad
+  crearPropiedad,
+  guardarPropiedad,
+  editarPropiedad,
+  guardarCambiosPropiedad,
+  borrarImagen,
+  verPropiedad,eliminar
 } from '../controllers/propiedadController.js';
 
-
-
-// Configuración de multer para subir imágenes
+// -----------------------------------------
+// MULTER — Subida de múltiples imágenes
+// -----------------------------------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/uploads/');
@@ -31,33 +30,38 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// -----------------------------------------
 const router = express.Router();
 
-// -----------------------------
-// Rutas Público
-// -----------------------------
+// ============ RUTAS PÚBLICAS =============
 router.get('/', paginaInicio);
-
-// -----------------------------
-// Panel / CRUD Propiedades
-// -----------------------------
-router.get('/admin', protegerRuta, admin);
-
-// Ver propiedad
 router.get('/propiedades/:id', verPropiedad);
 
-router.get('/propiedades/crear', protegerRuta, formularioCrear);
-router.post('/propiedades/crear', protegerRuta, guardar);
+// ============ ADMIN / CRUD ===============
+router.get('/admin', protegerRuta, admin);
 
-// imagen
-router.get('/propiedades/imagen/:id', protegerRuta, formularioImagen);
-router.post('/propiedades/imagen/:id', protegerRuta, upload.single('imagen'), guardarImagen);
+// Crear propiedad
+router.get('/propiedades/crear', protegerRuta, crearPropiedad);
+router.post(
+  '/propiedades/crear',
+  protegerRuta,
+  upload.array('imagenes'),   // <<< SUBIR VARIAS IMÁGENES
+  guardarPropiedad
+);
 
-// editar
-router.get('/propiedades/editar/:id', protegerRuta, formularioEditar);
-router.post('/propiedades/editar/:id', protegerRuta, guardarEdicion);
+// Editar propiedad
+router.get('/propiedades/editar/:id', protegerRuta, editarPropiedad);
+router.post(
+  '/propiedades/editar/:id',
+  protegerRuta,
+  upload.array('imagenes'),   // <<< TAMBIÉN PERMITE NUEVAS IMÁGENES
+  guardarCambiosPropiedad
+);
 
-// eliminar
+// Borrar una imagen individual (AJAX)
+router.delete('/imagenes/:id', protegerRuta, borrarImagen);
+
+// Eliminar propiedad completa
 router.post('/propiedades/eliminar/:id', protegerRuta, eliminar);
 
 export default router;

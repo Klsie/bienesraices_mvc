@@ -7,9 +7,10 @@ block header
     button.boton1.texto.headerBtn(
       onclick="ingresar()"
       class="bg-blue-600 uppercase font-bold rounded-md hover:bg-blue-700 transition-colors"
-    ) Inicio
+    ) CERRAR SESION
 
 block contenido
+
 
   div.divCasas
     each casa in casas
@@ -38,7 +39,8 @@ block contenido
     )
       img.imagenPerfil(src='/images/akali.jpg') 
       div.textoBtnPerfil Teisel
+      if esAdmin
 
   script.
-    function ingresar() { window.location.href = "/login"; }
+    function ingresar() { window.location.href = "/logout"; }
     function perfil() { window.location.href = "/perfil"; }

@@ -1,4 +1,5 @@
 import express from 'express';
+import protegerRuta from '../middlewares/protegerRuta.js';
 import {
     mostrarLogin,
     autenticar,
@@ -6,13 +7,16 @@ import {
     registrar,
     cerrarSesion,
     recuperarPassword,
-    recuperar
+    recuperar,
+    mostrarPerfil
 } from '../controllers/usuarioController.js';
 
 const router = express.Router();
 
 router.get('/login', mostrarLogin);
 router.post('/login', autenticar);
+
+router.get('/perfil', protegerRuta, mostrarPerfil);
 
 router.get('/registro', mostrarRegistro);
 router.post('/registro', registrar);

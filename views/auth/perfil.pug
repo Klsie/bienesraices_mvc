@@ -3,38 +3,61 @@ extends ../layout/index
 block header
   header.header
     div.divLogo
-      img(src='/images/logoLightGreen.png', alt='Un perro pug')
+      img(src='/images/logoLightGreen.png', alt='Logo')
 
 block contenido
   .contenedorGeneral
 
+    // --- DATOS DEL USUARIO ---
     .perfilUsuario
-      h2.nombreUsuario Teisel
+      h2.nombreUsuario #{usuario.nombre}
 
-      img.fotoPerfil(src="/images/akali.jpg" alt="perfil")
+      if usuario.foto
+        img.fotoPerfil(src=`/uploads/${usuario.foto}` alt="perfil")
+      else
+        img.fotoPerfil(src="/images/akali.jpg" alt="perfil")
 
-      p.correoUsuario teisel@correo.com
-      p.telefonoUsuario 3333333333
+      p.correoUsuario #{usuario.email}
+      p.telefonoUsuario #{usuario.telefono}
 
-      button.botonPublicar Publicar
+      a.botonPublicar(href="/propiedades/crear") Publicar
 
+
+    // --- LISTA DE ANUNCIOS ---
     .listaAnuncios
       h2.tituloListado Mis anuncios
 
-      each i in [1,2,3]
-        div.divCasa
-            img.imagenCasa(src='/images/casa.png', alt='Un perro pug')
+      if casas.length
+        each casa in casas
+          div.divCasa
+            // Imagen principal
+            if casa.imagenes.length
+              img.imagenCasa(src=`/uploads/${casa.imagenes[0].nombre}`)
+            else
+              img.imagenCasa(src='/images/casa.png')
+
             div.divInfoCasa
-                .textoCasa.font-extrabold.text-4xl.separacion MN 12,000,000
-                .textoCasa.grandeFina Calle Pedro Moreno
-                .textoCasa.mediano.font-thin Americana, Guadalajara
-                .textoCasa 550m² lote        10 rec      5 baños          4estac 
-                .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
+              .textoCasa.font-extrabold.text-4xl.separacion MN #{casa.precio}
+              .textoCasa.grandeFina #{casa.titulo}
+              .textoCasa.mediano.font-thin #{casa.direccion}
+              .textoCasa #{casa.descripcion.substring(0, 120)}...
+
             .botonesCasa
-              button.boton1.texto.btnInfo(onclick="editarCasa()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Modificar
-              button.boton2.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Eliminar
-    
-    script.
-        function editarCasa() {
-            window.location.href = "/auth/casa";
-        }
+              a.boton1.texto.btnInfo(
+                href=`/propiedades/editar/${casa.id}`
+                class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+              ) Modificar
+
+              form(method="POST", action=`/propiedades/eliminar/${casa.id}`)
+                button.boton2.texto.btnInfo(
+                  type="submit"
+                  class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                ) Eliminar
+
+      else
+        p.textoCasa No tienes propiedades publicadas aún.
+
+
+append scripts
+  script.
+    console.log("Perfil cargado correctamente");
