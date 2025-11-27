@@ -274,7 +274,7 @@
 }
 
 .boton2{
-  background-color: rgb(19, 52, 0);;
+  background-color: rgb(19, 52, 0);
   border-radius: 10px;
   font-size: x-large;
 }
@@ -503,19 +503,72 @@
 }
 
 /* Casa zone */
-
-.container {
-  display: grid; 
-  grid-auto-columns: 1fr; 
-  grid-template-columns: 1fr 1fr 1fr 1fr; 
-  grid-template-rows: 1fr 1fr; 
-  gap: 0px 0px; 
-  grid-template-areas: 
-    "img1 img1 img2 img4"
-    "img1 img1 img3 img5"; 
+.contenedorImgs{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row
 }
-.img1 { grid-area: img1; }
-.img2 { grid-area: img2; }
-.img3 { grid-area: img3; }
-.img4 { grid-area: img4; }
-.img5 { grid-area: img5; }
+
+.imgExampleG{
+  width: 50%;
+  margin-right: 5px;
+  border-radius: 10px 0 0 10px;
+}
+
+.contenedorImgsS{
+  width: 25%;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imgExampleS
+{
+  width: 100%;
+  object-fit: contain;
+}
+
+.borderRT{
+  border-radius: 0 10px 0 0;
+}
+
+.borderRB{
+  border-radius: 0 0 10px 0;
+}
+
+.marginCenter{
+  margin-top: 10px;
+}
+
+.botonesInferiores{
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+
+.imgLike{
+  background-color: rgb(108, 143, 84);
+  border-radius: 10px;
+  margin-left: 20px;
+}
+
+.colorFuente{
+  color: rgb(19, 52, 0);
+}
+
+/* Editar casa zone*/
+
+.icon-bottom-right {
+  position: relative; 
+}
+
+.icon-bottom-right .icon {
+  position: absolute;
+  bottom: 8px;  
+  right: 8px;    
+  width: 24px;   
+  height: 24px;
+  pointer-events: none; 
+}

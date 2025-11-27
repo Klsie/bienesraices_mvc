@@ -9,15 +9,23 @@ block contenido
                 each img in casa.imagenes
                     img(src=`/uploads/${img.ruta}` alt="foto propiedad")
 
-            .info
-                h2 MN #{casa.precio}
-                p #{casa.titulo} 
-                p #{casa.descripcion}
-                p #{casa.direccion} habitaciones
+block contenido
+  .contenedorImgs
+    img.imgExampleG(src='/images/ejemplo1.png', alt='Un perro pug')
+    .contenedorImgsS 
+      img.imgExampleS(src='/images/ejemplo2.png', alt='Un perro pug')
+      img.imgExampleS.marginCenter(src='/images/ejemplo1.png', alt='Un perro pug')
+    .contenedorImgsS 
+      img.imgExampleS.borderRT(src='/images/ejemplo2.png', alt='Un perro pug')
+      img.imgExampleS.borderRB.marginCenter(src='/images/ejemplo1.png', alt='Un perro pug')
+  .botonesInferiores
+    button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Contactar
+    .boton1.texto.btnInfo.imgLike(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors")
+      img.imagenPerfil(src='/images/like.png', alt='Un perro pug') 
+  .textoCasa.font-extrabold.text-4xl.separacion.colorFuente MN 12,000,000
+  .textoCasa.grandeFina.colorFuente Calle Pedro Moreno
+  .textoCasa.mediano.font-thin.colorFuente Americana, Guadalajara
+  .textoCasa.colorFuente 550m² lote        10 rec      5 baños          4estac 
+  .textoCasa Descubre una vida de lujo en el piso 20 de la Torre de Departamentos Landmark en la exclusiva colonia Puerta de Hierro. Este departamento te ofrece una vista panorámica incomparable de la Zona Diamante de Guadalajara. Con una recámara principal con closet y baño, una oficina insonorizada, medio baño para visitas, área de lavado, y cocina integral con barra de granito y suelo de mármol negro. Disfruta de la sala de TV con mueble fijo y las completas amenidades de Landmark, que incluyen alberca al aire libre, gimnasio, salón de yoga, ludoteca y más. Con una pista para jogging y un OXXO Smart en el sótano 2, tendrás todo lo que necesitas. Ubicado cerca de las mejores plazas comerciales, restaurantes y servicios de Guadalajara. ¡Haz de este departamento tu nuevo hogar de lujo!
+  
 
-                h3 Agente
-                p #{casa.usuario.nombre}
-                p #{casa.usuario.email}
-                p #{casa.usuario.telefono}
-
-                a.boton1(href=`/contactar/${casa.id}`) Contactar
