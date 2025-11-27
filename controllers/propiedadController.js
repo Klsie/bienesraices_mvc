@@ -1,4 +1,4 @@
-import { Casa, Imagen, Usuario } from '../models/index.js';
+import { Casa, Imagen, Usuario,TipoPropiedad } from '../models/index.js';
 import path from 'path';
 import fs from 'fs';
 
@@ -7,7 +7,7 @@ import fs from 'fs';
 // ----------------------------
 export const paginaInicio = async (req, res) => {
   const casas = await Casa.findAll({
-    include: [{ model: Imagen }],
+    include: [{ model: Imagen ,as: 'imagenes' }],
     limit: 10
   });
 
@@ -21,11 +21,11 @@ export const paginaInicio = async (req, res) => {
 // Panel administrador
 // ----------------------------
 export const admin = async (req, res) => {
-  const usuarioId = req.session?.usuario?.id;
+  const usuarioId = req.usuario.id;
 
   const casas = await Casa.findAll({
-    where: { usuarioId },
-    include: [{ model: Imagen }]
+    include: [{ model: Imagen, as: 'imagenes' }],
+    order: [['id', 'DESC']]
   });
 
   res.render('auth/casas', {
@@ -173,4 +173,31 @@ export const eliminar = async (req, res) => {
 
   await casa.destroy();
   res.redirect('/admin');
+};
+
+// ----------------------------
+// Ver Propiedad Detallada
+// ----------------------------
+export const verPropiedad = async (req, res) => {
+    const { id } = req.params;
+
+    const casa = await Casa.findByPk(id, {
+        include: [
+            { model: Imagen, as: 'imagenes' },
+            { model: Usuario, as: 'usuario' },
+            { model: TipoPropiedad, as: 'tipo' }
+        ]
+    });
+
+      console.log(casa.toJSON()); // <--- AGREGA ESTO
+
+
+    if (!casa) {
+        return res.render('404', { pagina: 'Propiedad no encontrada' });
+    }
+
+    res.render('auth/casa', {
+        pagina: casa.titulo,
+        casa
+    });
 };

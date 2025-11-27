@@ -1,13 +1,23 @@
 extends ../layout/index
 
-block header
-  header.header
-    div.divLogo
-      img(src='/images/logoLightGreen.png', alt='Un perro pug')
-
-    div.boton1.texto.text-center.btnPerfil(onclick="perfil()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") 
-      img.imagenPerfil(src='/images/akali.jpg', alt='Un perro pug') 
-      div.textoBtnPerfil
-        t Teisel
-
 block contenido
+    .detalle-container
+        h1.text-3xl.bold= casa.titulo
+
+        .grid-cols-2.grid.gap-6
+            .imagenes
+                each img in casa.imagenes
+                    img(src=`/uploads/${img.ruta}` alt="foto propiedad")
+
+            .info
+                h2 MN #{casa.precio}
+                p #{casa.titulo} 
+                p #{casa.descripcion}
+                p #{casa.direccion} habitaciones
+
+                h3 Agente
+                p #{casa.usuario.nombre}
+                p #{casa.usuario.email}
+                p #{casa.usuario.telefono}
+
+                a.boton1(href=`/contactar/${casa.id}`) Contactar

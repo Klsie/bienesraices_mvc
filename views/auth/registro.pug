@@ -5,13 +5,16 @@ block contenido
         img.mb-4(src='/images/logoLightGreen.png', alt='Un perro pug')
         
 
-        form.space-y-5(method="POST" action="/auth/registro")
+        form.space-y-5(method="POST" action="/registro")
             div
                 input#nombre.entradas(
                     placeholder="NOMBRE" type="text" name="nombre" )
             div
                 input#email.entradas(
                     placeholder="EMAIL" type="email" name="email" )
+            div
+                input#phone.entradas(
+                    placeholder="PHONE NUMBER" type="number" name="telefono" )
             div
                 input#password.entradas(
                     placeholder="PASSWORD" type="password" name="password" )

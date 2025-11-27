@@ -6,12 +6,12 @@ export default (req, res, next) => {
   if (!token) return res.redirect('/login');
 
   try {
-    const decodificado = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = decodificado;
-    res.locals.usuario = decodificado;
+    const decoded  = jwt.verify(token, process.env.JWT_SECRET);
+    req.usuario = decoded;
     next();
   } catch (error) {
     res.clearCookie('token');
     return res.redirect('/login');
   }
 };
+

@@ -11,7 +11,8 @@ import {
   guardarImagen,
   formularioEditar,
   guardarEdicion,
-  eliminar
+  eliminar,
+  verPropiedad
 } from '../controllers/propiedadController.js';
 
 
@@ -41,6 +42,9 @@ router.get('/', paginaInicio);
 // Panel / CRUD Propiedades
 // -----------------------------
 router.get('/admin', protegerRuta, admin);
+
+// Ver propiedad
+router.get('/propiedades/:id', verPropiedad);
 
 router.get('/propiedades/crear', protegerRuta, formularioCrear);
 router.post('/propiedades/crear', protegerRuta, guardar);
