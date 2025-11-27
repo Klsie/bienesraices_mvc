@@ -10,6 +10,9 @@ import usuarioRoutes from './routes/usuarioRoutes.js';
 import propiedadRoutes from './routes/propiedadRoutes.js';
 import routes from './routes/index.js';
 
+// Middleware que llena req.usuario
+import protegerRuta from './middlewares/protegerRuta.js';
+
 dotenv.config({ path: '.env' });
 
 const app = express();
@@ -22,26 +25,27 @@ app.use(cookieParser());
 // Archivos estáticos (CSS, imágenes, JS del frontend)
 app.use(express.static(path.resolve('public')));
 
-// PUG
+// Motor de vistas
 app.set('view engine', 'pug');
 app.set('views', path.resolve('views'));
 
-// Pasar sesión a las vistas
-app.use((req, res, next) => {
-    res.locals.session = req.session;
+// 🔥 --- NUEVO Y NECESARIO ---
+// Pasar usuario autenticado a TODAS las vistas Pug
+app.use(async (req, res, next) => {
+    res.locals.usuario = req.usuario || null; // ← Lo que pide tu navbar
     next();
 });
 
 // Rutas
-app.use('/', routes);            // rutas principales
-app.use('/', usuarioRoutes);     // login, registro, perfil
-app.use('/', propiedadRoutes);   // CRUD propiedades
+app.use('/', routes);            
+app.use('/', usuarioRoutes);    
+app.use('/', propiedadRoutes);  
 
-// Conectar DB y sincronizar sin borrar datos
+// Conectar a la base de datos
 const start = async () => {
     try {
         await db.authenticate();
-        await db.sync(); // NO usa force ni alter → no borra tablas
+        await db.sync();
         console.log('Base de datos conectada');
 
         const port = process.env.PORT || 3000;
@@ -54,3 +58,4 @@ const start = async () => {
 };
 
 start();
+

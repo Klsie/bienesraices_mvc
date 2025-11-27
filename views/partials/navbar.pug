@@ -1,0 +1,22 @@
+nav.navbar-custom
+    div.nav-left
+        a.logo-text(href="/") BienesRaices
+
+    ul.nav-menu
+        li
+            a(href="/") Inicio
+
+        if usuario
+            li
+                a(href="/propiedades/crear") Publicar
+            li
+                a(href="/perfil") Mi Perfil
+            li
+                a.logoutBtn(href="/logout") Cerrar Sesión
+        else
+            li
+                a(href="/login") Login
+            li
+                a.registerBtn(href="/registro") Registrarse
+
+

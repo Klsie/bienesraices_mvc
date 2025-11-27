@@ -572,3 +572,69 @@
   height: 24px;
   pointer-events: none; 
 }
+
+/* -----------------------------------------
+   NAVBAR PERSONALIZADO
+------------------------------------------ */
+
+.navbar-custom {
+  width: 100%;
+  background-color: rgb(19, 52, 0);        /* mismo header */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 4px solid #6C8F54;
+}
+
+.nav-left .logo-text {
+  font-family: 'LeagueSpartan';
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: rgb(198, 234, 168);               /* verde claro */
+  text-decoration: none;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-menu a {
+  font-family: 'LeagueSpartan';
+  font-size: 1.2rem;
+  color: rgb(198, 234, 168);
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.nav-menu a:hover {
+  color: #A7D88A;  /* más contraste */
+}
+
+/* Botón de Cerrar Sesión */
+.logoutBtn {
+  background-color: #6C8F54;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white !important;
+  font-weight: bold;
+}
+
+.logoutBtn:hover {
+  background-color: #446135;
+}
+
+/* Botón de Registro */
+.registerBtn {
+  background-color: rgb(198, 234, 168);
+  color: rgb(19, 52, 0) !important;
+  font-weight: bold;
+  padding:5px 10px;
+  border-radius: 6px;
+}
+
+.registerBtn:hover {
+  background-color: #A7D88A;
+}

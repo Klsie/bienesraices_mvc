@@ -4,10 +4,7 @@ block header
   header.header
     div.divLogo
       img(src='/images/logoLightGreen.png')
-    button.boton1.texto.headerBtn(
-      onclick="ingresar()"
-      class="bg-blue-600 uppercase font-bold rounded-md hover:bg-blue-700 transition-colors"
-    ) CERRAR SESION
+    
 
 block contenido
 
@@ -27,19 +24,11 @@ block contenido
           .textoCasa.mediano.font-thin #{casa.colonia}, #{casa.ciudad}
           .textoCasa #{casa.superficie}m² · #{casa.habitaciones} rec · #{casa.banos} baños · #{casa.estacionamiento} estac
           .textoCasa #{casa.descripcion.substring(0, 120)}...
-
           a.boton1.texto.btnInfo(
             href=`/propiedades/${casa.id}`
             class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
           ) Ver Detalles
-
-    div.boton1.texto.text-center.btnPerfil(
-      onclick="perfil()"
-      class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
-    )
-      img.imagenPerfil(src='/images/akali.jpg') 
-      div.textoBtnPerfil Teisel
-      if esAdmin
+    l
 
   script.
     function ingresar() { window.location.href = "/logout"; }

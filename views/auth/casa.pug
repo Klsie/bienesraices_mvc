@@ -1,42 +1,54 @@
 extends ../layout/index
 
 block contenido
+
     .detalle-container
         h1.text-3xl.bold= casa.titulo
-
+       
         .grid-cols-2.grid.gap-6
             .imagenes
                 each img in casa.imagenes
                     img(src=`/uploads/${img.ruta}` alt="foto propiedad")
 
-block contenido
-  .contenedorImgs
-    if casa.imagenes.length > 0
-      img.imgExampleG(src=`/uploads/${casa.imagenes[0].ruta}`, alt=`Imagen principal de ${casa.titulo}`)
-    else
-      img.imgExampleG(src='/images/default_house.png', alt='Imagen por defecto')
 
-    //- Columna 1 de imágenes pequeñas
-    .contenedorImgsS 
-      if casa.imagenes[1]
-        img.imgExampleS(src=`/uploads/${casa.imagenes[1].ruta}`, alt='Imagen secundaria')
-      if casa.imagenes[2]
-        img.imgExampleS.marginCenter(src=`/uploads/${casa.imagenes[2].ruta}`, alt='Imagen secundaria')
+    .contenedorImgs
+        if casa.imagenes.length > 0
+            img.imgExampleG(src=`/uploads/${casa.imagenes[0].ruta}`, alt=`Imagen principal de ${casa.titulo}`)
+        else
+            img.imgExampleG(src='/images/default_house.png', alt='Imagen por defecto')
 
-    //- Columna 2 de imágenes pequeñas
-    .contenedorImgsS 
-      if casa.imagenes[3]
-        img.imgExampleS.borderRT(src=`/uploads/${casa.imagenes[3].ruta}`, alt='Imagen secundaria')
-      if casa.imagenes[4]
-        img.imgExampleS.borderRB.marginCenter(src=`/uploads/${casa.imagenes[4].ruta}`, alt='Imagen secundaria')
+        // Columna 1 de imágenes pequeñas
+        .contenedorImgsS 
+            if casa.imagenes[1]
+                img.imgExampleS(src=`/uploads/${casa.imagenes[1].ruta}`)
+            if casa.imagenes[2]
+                img.imgExampleS.marginCenter(src=`/uploads/${casa.imagenes[2].ruta}`)
+
+        // Columna 2 de imágenes pequeñas
+        .contenedorImgsS 
+            if casa.imagenes[3]
+                img.imgExampleS.borderRT(src=`/uploads/${casa.imagenes[3].ruta}`)
+            if casa.imagenes[4]
+                img.imgExampleS.borderRB.marginCenter(src=`/uploads/${casa.imagenes[4].ruta}`)
 
 
-  .botonesInferiores
-    button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Contactar
-    .boton1.texto.btnInfo.imgLike(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors")
-      img.imagenPerfil(src='/images/like.png', alt='Un perro pug') 
-  .textoCasa.font-extrabold.text-4xl.separacion.colorFuente MXN $#{casa.precio}
-  .textoCasa.grandeFina.colorFuente #{casa.direccion}
-  .textoCasa.mediano.font-thin.colorFuente  Guadalajara, Jal
-  .textoCasa.colorFuente 550m² lote        10 rec      5 baños          4estac 
-  .textoCasa #{casa.descripcion}
+    // --- BOTONES ---
+    .botonesInferiores
+        button.boton1.texto.btnInfo(
+            onclick="ingresar()",
+            class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+        ) Contactar
+        
+        .boton1.texto.btnInfo.imgLike(
+            onclick="ingresar()",
+            class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+        )
+            img.imagenPerfil(src='/images/like.png')
+
+
+    // --- DETALLE ---
+    .textoCasa.font-extrabold.text-4xl.separacion.colorFuente MXN $#{casa.precio}
+    .textoCasa.grandeFina.colorFuente #{casa.direccion}
+    .textoCasa.mediano.font-thin.colorFuente Guadalajara, Jal
+    .textoCasa.colorFuente 550m² lote        10 rec      5 baños          4estac 
+    .textoCasa #{casa.descripcion}

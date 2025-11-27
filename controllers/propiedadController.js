@@ -11,13 +11,14 @@ export const paginaInicio = async (req, res) => {
     limit: 10,
     order: [['id', 'DESC']]
   });
-
-  // Usa la vista de listado (casas.pug dentro de /auth)
+    // Usa la vista de listado (casas.pug dentro de /auth)
   res.render('auth/casas', {
     pagina: 'Bienes Raíces',
     casas,
     esAdmin: false
   });
+
+  
 };
 
 // ----------------------------

@@ -14,7 +14,7 @@ import {
 const router = express.Router();
 
 router.get('/login', mostrarLogin);
-router.post('/login', autenticar);
+router.post('/login/ingresar', autenticar);
 
 router.get('/perfil', protegerRuta, mostrarPerfil);
 
