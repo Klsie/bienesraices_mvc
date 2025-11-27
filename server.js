@@ -9,8 +9,7 @@ import db from './config/db.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import propiedadRoutes from './routes/propiedadRoutes.js';
 import routes from './routes/index.js';
-
-// Middleware que llena req.usuario
+import identificarUsuario from './middlewares/identificarUsuario.js';
 import protegerRuta from './middlewares/protegerRuta.js';
 
 dotenv.config({ path: '.env' });
@@ -21,6 +20,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(identificarUsuario);
+
 
 // Archivos estáticos (CSS, imágenes, JS del frontend)
 app.use(express.static(path.resolve('public')));
