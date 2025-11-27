@@ -1,30 +1,49 @@
 extends ../layout/index
 
-block header
-  header.header
-    div.divLogo
-      img(src='/images/logoLightGreen.png', alt='Un perro pug')
-
-    div.boton1.texto.text-center.btnPerfil(onclick="perfil()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") 
-      img.imagenPerfil(src='/images/akali.jpg', alt='Un perro pug') 
-      div.textoBtnPerfil
-        t Teisel
-
 block contenido
-    
-    .contenedorImgs
-        img.imgExampleG(src='/images/ejemplo1.png', alt='Un perro pug')
-        .contenedorImgsS 
-            img.imgExampleS(src='/images/ejemplo2.png', alt='Un perro pug')
-            img.imgExampleS.marginCenter(src='/images/ejemplo1.png', alt='Un perro pug')
-        .contenedorImgsS 
-            img.imgExampleS.borderRT(src='/images/ejemplo2.png', alt='Un perro pug')
-            img.imgExampleS.borderRB.marginCenter(src='/images/ejemplo1.png', alt='Un perro pug')
 
-    form.space-y-5    
-        input#text.entradas.marginCenter(placeholder="PRECIO" type="text" name="precio" value=" MN 12,000,000")
-        input#text.entradas.marginCenter(placeholder="DIRECCION" type="text" name="direccion" value="Calle Pedro Moreno Americana, Guadalajara")
-        input#text.entradas.marginCenter(placeholder="TITULO" type="text" name="direccion" value="Departamento en Venta en Puerta de Hierro - Landmark")
-        textarea.marginCenter.entradas(placeholder="DESCRIPCIÓN"  name="descripcion" rows="10") Descubre una vida de lujo en el piso 20 de la Torre de Departamentos Landmark en la exclusiva colonia Puerta de Hierro. Este departamento te ofrece una vista panorámica incomparable de la Zona Diamante de Guadalajara. Con una recámara principal con closet y baño, una oficina insonorizada, medio baño para visitas, área de lavado, y cocina integral con barra de granito y suelo de mármol negro. Disfruta de la sala de TV con mueble fijo y las completas amenidades de Landmark, que incluyen alberca al aire libre, gimnasio, salón de yoga, ludoteca y más. Con una pista para jogging y un OXXO Smart en el sótano 2, tendrás todo lo que necesitas. Ubicado cerca de las mejores plazas comerciales, restaurantes y servicios de Guadalajara. ¡Haz de este departamento tu nuevo hogar de lujo! 
-  
-        button.boton1.texto.btnInfo(type="submit" onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Guardar y salir
+
+  button.boton1.texto(type="button" onclick="retro()")| ← Regresar
+
+  if accion === 'editar'
+    h2.text-xl.mb-4 Imágenes actuales
+
+    .contenedorImgs
+      if imagenes.length
+        each img in imagenes
+          .imgBox
+            img.imgExampleG(src=`/uploads/${img.nombre}`)
+            button.botonEliminar(
+              data-id=img.id
+            ) Eliminar
+      else
+        p No hay imágenes aún
+
+  form.space-y-5(
+    method="POST"
+    enctype="multipart/form-data"
+    action= accion === 'crear' ? '/admin/crear' : `/propiedades/editar/${casa.id}`
+  )
+
+    input.entradas(type="text" name="precio" placeholder="PRECIO" value=casa.precio || '')
+    input.entradas(type="text" name="direccion" placeholder="DIRECCION" value=casa.direccion || '')
+    input.entradas(type="text" name="titulo" placeholder="TITULO" value=casa.titulo || '')
+    textarea.entradas(name="descripcion" rows="8" placeholder="DESCRIPCIÓN")= casa.descripcion || ''
+
+    input(type="file" name="imagenes" multiple)
+
+    button.boton1 Guardar
+
+append scripts
+  script.
+    document.querySelectorAll('.botonEliminar').forEach(btn => {
+      btn.onclick = async () => {
+        const id = btn.dataset.id;
+
+        const res = await fetch(`/imagenes/${id}`, { method: 'DELETE' });
+
+        if (res.ok) {
+          btn.parentElement.remove();
+        }
+      };
+    });
