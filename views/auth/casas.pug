@@ -3,53 +3,42 @@ extends ../layout/index
 block header
   header.header
     div.divLogo
-      img(src='/images/logoLightGreen.png', alt='Un perro pug')
-
-    button.boton1.texto.headerBtn(onclick="ingresar()" class="bg-blue-600 uppercase font-bold rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Inicio
+      img(src='/images/logoLightGreen.png')
+    button.boton1.texto.headerBtn(
+      onclick="ingresar()"
+      class="bg-blue-600 uppercase font-bold rounded-md hover:bg-blue-700 transition-colors"
+    ) Inicio
 
 block contenido
 
   div.divCasas
-    div.divCasa
-      img.imagenCasa(src='/images/casa.png', alt='Un perro pug')
-      div.divInfoCasa
-        .textoCasa.font-extrabold.text-4xl.separacion MN 12,000,000
-        .textoCasa.grandeFina Calle Pedro Moreno
-        .textoCasa.mediano.font-thin Americana, Guadalajara
-        .textoCasa 550m² lote        10 rec      5 baños          4estac 
-        .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
-        button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Contactar
-    div.divCasa
-      img.imagenCasa(src='/images/casa.png', alt='Un perro pug')
-      div.divInfoCasa
-        .textoCasa.font-extrabold.text-4xl.separacion MN 12,000,000
-        .textoCasa.grandeFina Calle Pedro Moreno
-        .textoCasa.mediano.font-thin Americana, Guadalajara
-        .textoCasa 550m² lote        10 rec      5 baños          4estac 
-        .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
-        button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Contactar
-    div.divCasa
-      img.imagenCasa(src='/images/casa.png', alt='Un perro pug')
-      div.divInfoCasa
-        .textoCasa.font-extrabold.text-4xl.separacion MN 12,000,000
-        .textoCasa.grandeFina Calle Pedro Moreno
-        .textoCasa.mediano.font-thin Americana, Guadalajara
-        .textoCasa 550m² lote        10 rec      5 baños          4estac 
-        .textoCasa Casa en Venta en la Colonia Americana – Ideal para Hotel Boutique o Proyecto Turístico Premium
-        button.boton1.texto.btnInfo(onclick="ingresar()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") Contactar
-    
-    div.boton1.texto.text-center.btnPerfil(onclick="perfil()" class="bg-blue-600 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors") 
-      img.imagenPerfil(src='/images/akali.jpg', alt='Un perro pug') 
-      div.textoBtnPerfil
-        t Teisel
-    
+    each casa in casas
+      div.divCasa
+        // SI TIENE IMÁGENES
+        if casa.Imagens && casa.Imagens.length > 0
+          img.imagenCasa(src=`/uploads/${casa.Imagens[0].ruta}`)
+        else
+          img.imagenCasa(src='/images/default_house.png')
+
+        div.divInfoCasa
+          .textoCasa.font-extrabold.text-4xl.separacion MN #{casa.precio}
+          .textoCasa.grandeFina #{casa.calle}
+          .textoCasa.mediano.font-thin #{casa.colonia}, #{casa.ciudad}
+          .textoCasa #{casa.superficie}m² · #{casa.habitaciones} rec · #{casa.banos} baños · #{casa.estacionamiento} estac
+          .textoCasa #{casa.descripcion.substring(0, 120)}...
+
+          a.boton1.texto.btnInfo(
+            href=`/propiedades/${casa.id}`
+            class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+          ) Ver Detalles
+
+    div.boton1.texto.text-center.btnPerfil(
+      onclick="perfil()"
+      class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+    )
+      img.imagenPerfil(src='/images/akali.jpg') 
+      div.textoBtnPerfil Teisel
 
   script.
-    function ingresar() {
-      window.location.href = "/auth/login";
-    }
-
-    function perfil() {
-      window.location.href = "/auth/perfil";
-    }
-    
+    function ingresar() { window.location.href = "/login"; }
+    function perfil() { window.location.href = "/perfil"; }

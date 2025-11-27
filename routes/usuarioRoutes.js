@@ -4,7 +4,9 @@ import {
     autenticar,
     mostrarRegistro,
     registrar,
-    cerrarSesion
+    cerrarSesion,
+    recuperarPassword,
+    recuperar
 } from '../controllers/usuarioController.js';
 
 const router = express.Router();
@@ -14,6 +16,9 @@ router.post('/login', autenticar);
 
 router.get('/registro', mostrarRegistro);
 router.post('/registro', registrar);
+
+router.get('/olvide-password', recuperarPassword);
+router.post('/olvide-password',recuperar);
 
 router.get('/logout', cerrarSesion);
 

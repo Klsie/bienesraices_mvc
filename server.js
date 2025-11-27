@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import db from './config/db.js';
 
 // Rutas
@@ -16,19 +17,10 @@ const app = express();
 // Middlewares esenciales
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Archivos estáticos (CSS, imágenes, JS del frontend)
 app.use(express.static(path.resolve('public')));
-
-// Configurar sesiones
-app.use(session({
-    secret: process.env.SESSION_SECRET ?? 'secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 2  // 2 horas
-    }
-}));
 
 // PUG
 app.set('view engine', 'pug');

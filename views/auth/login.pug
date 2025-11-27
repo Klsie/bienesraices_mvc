@@ -1,20 +1,33 @@
 extends ../layout/index
 
 block contenido
-            .px-4.shadow.cuadros.loginM
-                img.mb-4(src='/images/logoLightGreen.png', alt='Un perro pug')
-                a.texto ¿No tienes una cuenta? 
-                a.textoLink(href="/auth/registro") Crear cuenta
-        
-                form.space-y-5
-                    div
-                        input#email.entradas(
-                            placeholder="CORREO" type="email" name="email" )
-                    div
-                        input#password.entradas(
-                            placeholder="PASSWORD" type="password" name="password" )
+    .px-4.shadow.cuadros.loginM
+        img.mb-4(src='/images/logoLightGreen.png', alt='Un perro pug')
+        a.texto ¿No tienes una cuenta? 
+        a.textoLink(href="/registro") Crear cuenta
 
-                    div.mb-4
-                    a.textoLink(href="/auth/olvide-password") ¿Olvidaste tu password? 
+        // FORMULARIO CORREGIDO
+        form.space-y-5(method="POST" action="/login")
+            div
+                input#email.entradas(
+                    placeholder="CORREO" 
+                    type="email" 
+                    name="email"
+                    required
+                )
+            div
+                input#password.entradas(
+                    placeholder="PASSWORD" 
+                    type="password" 
+                    name="password"
+                    required
+                )
 
-                    input.boton1.texto(type="submit" value="ACEPTAR" class="bg-blue-600 w-full text-white uppercase font-bold py-3 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors")
+            div.mb-4
+            a.textoLink(href="/olvide-password") ¿Olvidaste tu password? 
+
+            input.boton1.texto(
+                type="submit" 
+                value="ACEPTAR" 
+                class="bg-blue-600 w-full text-white uppercase font-bold py-3 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors"
+            )

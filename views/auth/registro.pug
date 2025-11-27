@@ -5,7 +5,7 @@ block contenido
         img.mb-4(src='/images/logoLightGreen.png', alt='Un perro pug')
         
 
-        form.space-y-5(method="POST" action="/auth/registro")
+        form.space-y-5(method="POST" action="/registro")
             div
                 input#nombre.entradas(
                     placeholder="NOMBRE" type="text" name="nombre" )
@@ -13,13 +13,16 @@ block contenido
                 input#email.entradas(
                     placeholder="EMAIL" type="email" name="email" )
             div
+                input#phone.entradas(
+                    placeholder="PHONE NUMBER" type="number" name="telefono" )
+            div
                 input#password.entradas(
                     placeholder="PASSWORD" type="password" name="password" )
             div
                 input#repetir_password.entradas(
                     placeholder="REPITE TU PASSWORD" type="password" name="repetir_password" )
             div.flex.items-center.justify-between  
-                a.textoLink(href="/auth/login") ¿Ya tienes una cuenta? Inicia Sesión
-                a.textoLink(href="/auth/olvide-password") ¿Olvidaste tu password?
+                a.textoLink(href="/login") ¿Ya tienes una cuenta? Inicia Sesión
+                a.textoLink(href="/olvide-password") ¿Olvidaste tu password?
 
             input.boton1.texto(type="submit" value="Crear Cuenta" class="bg-blue-600 w-full text-white uppercase font-bold py-3 rounded-md hover:cursor-pointer hover:bg-blue-700 transition-colors")

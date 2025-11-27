@@ -1,31 +1,63 @@
 import express from 'express';
 import multer from 'multer';
-import { protegerRuta } from '../middlewares/auth.js';
+import path from 'path';
+import protegerRuta from '../middlewares/protegerRuta.js';
 import {
-  inicioPublico, verPropiedadPublica,
-  adminListar, adminCrearForm, adminGuardar, adminEditarForm, adminActualizar, adminEliminar
+  paginaInicio,
+  admin,
+  formularioCrear,
+  guardar,
+  formularioImagen,
+  guardarImagen,
+  formularioEditar,
+  guardarEdicion,
+  eliminar,
+  verPropiedad
 } from '../controllers/propiedadController.js';
+
+
+
+// Configuración de multer para subir imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const nombre = Date.now() + ext;
+    cb(null, nombre);
+  }
+});
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
-// multer config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/uploads'),
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+// -----------------------------
+// Rutas Público
+// -----------------------------
+router.get('/', paginaInicio);
 
-/* Public */
-router.get('/', inicioPublico);
-router.get('/propiedad/:id', verPropiedadPublica);
+// -----------------------------
+// Panel / CRUD Propiedades
+// -----------------------------
+router.get('/admin', protegerRuta, admin);
 
-/* Admin (agente) */
-router.get('/admin', protegerRuta, adminListar);
-router.get('/admin/propiedades', protegerRuta, adminListar);
-router.get('/admin/propiedades/crear', protegerRuta, adminCrearForm);
-router.post('/admin/propiedades/crear', protegerRuta, upload.array('imagenes', 6), adminGuardar);
-router.get('/admin/propiedades/editar/:id', protegerRuta, adminEditarForm);
-router.post('/admin/propiedades/editar/:id', protegerRuta, upload.array('imagenes', 6), adminActualizar);
-router.post('/admin/propiedades/eliminar/:id', protegerRuta, adminEliminar);
+// Ver propiedad
+router.get('/propiedades/:id', verPropiedad);
+
+router.get('/propiedades/crear', protegerRuta, formularioCrear);
+router.post('/propiedades/crear', protegerRuta, guardar);
+
+// imagen
+router.get('/propiedades/imagen/:id', protegerRuta, formularioImagen);
+router.post('/propiedades/imagen/:id', protegerRuta, upload.single('imagen'), guardarImagen);
+
+// editar
+router.get('/propiedades/editar/:id', protegerRuta, formularioEditar);
+router.post('/propiedades/editar/:id', protegerRuta, guardarEdicion);
+
+// eliminar
+router.post('/propiedades/eliminar/:id', protegerRuta, eliminar);
 
 export default router;
