@@ -4,32 +4,53 @@ block header
   header.header
     div.divLogo
       img(src='/images/logoLightGreen.png')
-    
 
 block contenido
 
-
   div.divCasas
-    each casa in casas
-      div.divCasa
-        // SI TIENE IMÁGENES
-        if casa.Imagens && casa.Imagens.length > 0
-          img.imagenCasa(src=`/uploads/${casa.Imagens[0].ruta}`)
-        else
-          img.imagenCasa(src='/images/default_house.png')
 
-        div.divInfoCasa
-          .textoCasa.font-extrabold.text-4xl.separacion MN #{casa.precio}
-          .textoCasa.grandeFina #{casa.calle}
-          .textoCasa.mediano.font-thin #{casa.colonia}, #{casa.ciudad}
-          .textoCasa #{casa.superficie}m² · #{casa.habitaciones} rec · #{casa.banos} baños · #{casa.estacionamiento} estac
-          .textoCasa #{casa.descripcion.substring(0, 120)}...
-          a.boton1.texto.btnInfo(
-            href=`/propiedades/${casa.id}`
-            class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
-          ) Ver Detalles
-    l
+    // --- SI NO HAY CASAS ---
+    if !casas || casas.length === 0
+      div(style="text-align:center; margin-top:50px;")
+        h2(style="font-size:2rem; font-family:'LeagueSpartan'; color:#133400;")
+          | Aún no hay propiedades publicadas.
+        p(style="color:#6C8F54; font-size:1.3rem; margin-top:10px")
+          | ¡Sé el primero en publicar una!
+        if usuario 
+          a.boton1.texto(
+          href="/crear"
+          style="padding:12px 25px; display:inline-block; margin-top:20px; font-size:1.4rem;") Publicar Propiedad
+        else 
+          a.boton1.texto(
+          href="/registro"
+          style="padding:12px 25px; display:inline-block; margin-top:20px; font-size:1.4rem;" ) Publicar Propiedad
+          br
+          a.boton1.texto(
+          href="/login"
+          style="padding:12px 25px; display:inline-block; margin-top:20px; font-size:1.4rem;" ) Iniciar Sesion Para Publicar Propiedad
+        
+    else
+      each casa in casas
+        div.divCasa
+          // SI TIENE IMÁGENES
+          if casa.Imagens && casa.Imagens.length > 0
+            img.imagenCasa(src=`/uploads/${casa.Imagens[0].ruta}`)
+          else
+            img.imagenCasa(src='/images/default_house.png')
 
+          div.divInfoCasa
+            .textoCasa.font-extrabold.text-4xl.separacion MN #{casa.precio}
+            .textoCasa.grandeFina #{casa.calle}
+            .textoCasa.mediano.font-thin #{casa.colonia}, #{casa.ciudad}
+            .textoCasa #{casa.superficie}m² · #{casa.habitaciones} rec · #{casa.banos} baños · #{casa.estacionamiento} estac
+            .textoCasa #{casa.descripcion.substring(0, 120)}...
+
+            a.boton1.texto.btnInfo(
+              href=`/propiedades/${casa.id}`
+              class="bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+            ) Ver Detalles
+
+append scripts
   script.
     function ingresar() { window.location.href = "/logout"; }
     function perfil() { window.location.href = "/perfil"; }
