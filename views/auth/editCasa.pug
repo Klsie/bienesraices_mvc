@@ -22,7 +22,7 @@ block contenido
   form.space-y-5(
     method="POST"
     enctype="multipart/form-data"
-    action= accion === 'crear' ? '/admin/crear' : `/propiedades/editar/${casa.id}`
+    action= accion === 'crear' ? '/crear' : `/propiedades/editar/${casa.id}`
   )
 
     input.entradas(type="text" name="precio" placeholder="PRECIO" value=casa.precio || '')

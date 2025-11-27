@@ -41,9 +41,9 @@ router.get('/propiedades/:id', verPropiedad);
 router.get('/admin', protegerRuta, admin);
 
 // Crear propiedad
-router.get('/admin/crear', protegerRuta, crearPropiedad);
+router.get('/crear', protegerRuta, crearPropiedad);
 router.post(
-  '/admin/crear',
+  '/crear',
   protegerRuta,
   upload.array('imagenes'),   // <<< SUBIR VARIAS IMÁGENES
   guardarPropiedad
